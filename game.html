@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Jet Racer Game</title>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.2/firebase-database.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/three/build/three.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/OBJLoader.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/MTLLoader.js'></script>
+    <script src='SimpleCubes.js'></script>
+    <script src="main.js"></script>
+    <style>
+        body{
+            background-color: #88aaff;
+            overflow: hidden;
+        }
+        #menu{
+            position: absolute;
+            top:0px;
+            left: 0px;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            border-bottom: rgba(255, 255, 255, 0.3) solid 1px;
+            text-align: center;
+            color:white;
+        }
+        #end{
+            text-align: center;
+            background-color: rgba(240, 248, 255, 0.8);
+            color: green;
+            text-shadow: 2px 2px 2px cyan;
+            margin: 10px;
+            border: 1px solid white;
+        }
+        #finalists{
+            height: 150px;
+            overflow-y: scroll;
+        }
+        button{
+            background-color: aqua;
+            color: green;
+            width: 90%;
+            border: outset 2px white;
+        }
+        button:hover{
+            cursor: pointer;
+            color: black;
+            background-color: white;
+        }
+    </style>
+</head>
+<body onload="runGame()">
+    <canvas id='game' width='1350' height='600'></canvas>
+    <div id="menu">
+        
+    </div>
+</body>
+</html>
