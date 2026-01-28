@@ -84,7 +84,7 @@ function runGame() {
         thisPlane = childData['plane'];
         if (thisPlane == "default") {
           thisObject = SimpleCubes.createCube({
-            x: childData["x"], y: childData["y"], z: childData["z"], width: 2, height: 2, length: 2, color: '#aaaaaa', physics: true,
+            x: childData["x"], y: childData["y"], z: childData["z"], width: 2, height: 2, length: 2, color: '#aaaaaa', physics: thisPlayer == player,
             model: "./planes/default.obj", mtl: "./planes/default.mtl"
           });
           thisObject.setOpacity(0.1);
@@ -147,7 +147,7 @@ function loadLevel() {
 }
 
 check = 0
-function gameLoop() {
+async function gameLoop() {
   try {
     SimpleCubes.background("#88aaff");
     for (pobj of players) {
@@ -178,7 +178,7 @@ function gameLoop() {
           } else {
             pobj['obj'].velocityZ = 0;
           }
-          firebase.database().ref("/JetRacer/" + room + "/players/" + player).update({
+           firebase.database().ref("/JetRacer/" + room + "/players/" + player).update({
             x: pobj['obj'].position.x,
             y: pobj['obj'].position.y,
             z: pobj['obj'].position.z
@@ -197,7 +197,7 @@ function gameLoop() {
             } else if (SimpleCubes.isTouching(pobj['obj'], level[7])) {
               isPlaying = false;
               check = 5;
-              firebase.database().ref("/JetRacer/" + room + "/finalists/").once('value', function (snapshot) {
+               firebase.database().ref("/JetRacer/" + room + "/finalists/").once('value', function (snapshot) {
                 finalistCount = 0;
                 snapshot.forEach(function (childSnapshot) {
                   childKey = childSnapshot.key;
@@ -209,12 +209,12 @@ function gameLoop() {
               });
             }
           }
-          firebase.database().ref("/JetRacer/" + room + "/players/" + player).update({
+           firebase.database().ref("/JetRacer/" + room + "/players/" + player).update({
             checkpoint: check
           });
           document.getElementById("menu").innerHTML = "<label>" + room + " - " + pobj["name"] + " | " + check + "</label>";
         } else {
-          firebase.database().ref("/JetRacer/" + room + "/finalists/").once('value', function (snapshot) {
+           firebase.database().ref("/JetRacer/" + room + "/finalists/").once('value', function (snapshot) {
             finalHolder = "";
             snapshot.forEach(function (childSnapshot) {
               childKey = childSnapshot.key; childData = childSnapshot.val();
@@ -224,7 +224,7 @@ function gameLoop() {
           });
         }
       } else if (pobj["name"] != player) {
-        firebase.database().ref("/JetRacer/" + room + "/players/" + pobj["name"]).once('value', data => {
+        await firebase.database().ref("/JetRacer/" + room + "/players/" + pobj["name"]).once('value', data => {
           playerData = data.val();
           pobj['obj'].setPosition(playerData["x"], playerData["y"], playerData["z"]);
         })
@@ -233,7 +233,7 @@ function gameLoop() {
   } catch (error) {
     console.warn("Frame Update Error: ", error)
   }
-  requestAnimationFrame(gameLoop);
+  await requestAnimationFrame(gameLoop);
 }
 
 function end(){
